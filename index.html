@@ -1,0 +1,319 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .hero { background: #0a0a0a; color: #fff; position: relative; overflow: hidden; }
+  .hero-inner { display: grid; grid-template-columns: 1fr 1fr; min-height: 480px; }
+  .hero-text { padding: 3rem 2rem 3rem 2.5rem; display: flex; flex-direction: column; justify-content: center; }
+  .badge { display: inline-block; background: #ff5500; color: #fff; font-size: 11px; font-weight: 500; padding: 4px 12px; border-radius: 20px; letter-spacing: 0.5px; margin-bottom: 1rem; text-transform: uppercase; }
+  .hero-title { font-size: 36px; font-weight: 500; line-height: 1.15; margin-bottom: 0.5rem; }
+  .hero-title span { color: #ff5500; }
+  .hero-sub { font-size: 14px; color: #aaa; margin-bottom: 1.5rem; line-height: 1.6; }
+  .price-row { display: flex; align-items: baseline; gap: 12px; margin-bottom: 1.5rem; }
+  .price { font-size: 32px; font-weight: 500; color: #ff5500; }
+  .price-note { font-size: 13px; color: #888; }
+  .color-section { margin-bottom: 1.5rem; }
+  .color-label { font-size: 12px; color: #888; margin-bottom: 8px; }
+  .color-dots { display: flex; gap: 10px; }
+  .dot { width: 26px; height: 26px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: border-color 0.2s; }
+  .dot.active { border-color: #fff; }
+  .dot-orange { background: linear-gradient(135deg, #000 50%, #ff5500 50%); }
+  .dot-green { background: linear-gradient(135deg, #000 50%, #39ff14 50%); }
+  .dot-white { background: linear-gradient(135deg, #fff 50%, #ff5500 50%); }
+  .dot-blue { background: linear-gradient(135deg, #000 50%, #1a90ff 50%); }
+  .cta-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .btn-primary { background: #ff5500; color: #fff; border: none; padding: 12px 28px; border-radius: 8px; font-size: 15px; font-weight: 500; cursor: pointer; transition: background 0.2s, transform 0.1s; }
+  .btn-primary:hover { background: #e04a00; }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-secondary { background: transparent; color: #fff; border: 1px solid #555; padding: 12px 24px; border-radius: 8px; font-size: 15px; cursor: pointer; transition: border-color 0.2s; }
+  .btn-secondary:hover { border-color: #fff; }
+  .hero-img { position: relative; background: #111; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .hero-img img { width: 100%; height: 100%; object-fit: cover; opacity: 0.9; }
+  .img-nav { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; }
+  .img-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.4); cursor: pointer; transition: all 0.2s; }
+  .img-dot.active { background: #ff5500; width: 18px; border-radius: 3px; }
+  .specs { background: var(--color-background-primary); padding: 2.5rem 2.5rem 2rem; }
+  .section-title { font-size: 18px; font-weight: 500; margin-bottom: 1.5rem; color: var(--color-text-primary); }
+  .specs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+  .spec-card { background: var(--color-background-secondary); border-radius: 10px; padding: 1rem; }
+  .spec-val { font-size: 16px; font-weight: 500; margin-bottom: 2px; color: var(--color-text-primary); }
+  .spec-name { font-size: 12px; color: var(--color-text-secondary); }
+  .features { background: var(--color-background-tertiary); padding: 2rem 2.5rem; }
+  .features-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .feat { display: flex; align-items: flex-start; gap: 10px; padding: 1rem; background: var(--color-background-primary); border-radius: 10px; border: 0.5px solid var(--color-border-tertiary); }
+  .feat-icon { width: 32px; height: 32px; background: #ff550015; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .feat-dot { width: 10px; height: 10px; background: #ff5500; border-radius: 50%; }
+  .feat-title { font-size: 13px; font-weight: 500; margin-bottom: 3px; color: var(--color-text-primary); }
+  .feat-desc { font-size: 12px; color: var(--color-text-secondary); line-height: 1.5; }
+  .gallery { padding: 2rem 2.5rem; background: var(--color-background-primary); }
+  .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .gallery-item { border-radius: 10px; overflow: hidden; aspect-ratio: 1; cursor: pointer; border: 2px solid transparent; transition: border-color 0.2s; }
+  .gallery-item.selected { border-color: #ff5500; }
+  .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+  .gallery-item:hover img { transform: scale(1.04); }
+  .order-section { background: #0a0a0a; color: #fff; padding: 2.5rem; }
+  .order-card { background: #161616; border-radius: 14px; padding: 2rem; border: 0.5px solid #333; max-width: 600px; margin: 0 auto; }
+  .order-title { font-size: 20px; font-weight: 500; margin-bottom: 0.4rem; color: #fff; }
+  .order-sub { font-size: 13px; color: #888; margin-bottom: 1.5rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group label { font-size: 12px; color: #aaa; }
+  .form-group input, .form-group select, .form-group textarea { background: #222; border: 0.5px solid #444; border-radius: 8px; padding: 10px 12px; color: #fff; font-size: 14px; font-family: var(--font-sans); outline: none; transition: border-color 0.2s; }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #ff5500; }
+  .form-group select option { background: #222; }
+  .form-group textarea { resize: vertical; min-height: 70px; }
+  .qty-row { display: flex; align-items: center; gap: 12px; margin-bottom: 1.5rem; }
+  .qty-label { font-size: 13px; color: #aaa; }
+  .qty-ctrl { display: flex; align-items: center; gap: 8px; }
+  .qty-btn { width: 30px; height: 30px; background: #333; border: none; color: #fff; border-radius: 6px; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .qty-num { font-size: 16px; font-weight: 500; min-width: 24px; text-align: center; color: #fff; }
+  .total-row { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-top: 0.5px solid #333; border-bottom: 0.5px solid #333; margin-bottom: 1.5rem; }
+  .total-label { font-size: 14px; color: #aaa; }
+  .total-price { font-size: 24px; font-weight: 500; color: #ff5500; }
+  .whatsapp-btn-big { width: 100%; background: #25d366; color: #fff; border: none; padding: 14px; border-radius: 10px; font-size: 16px; font-weight: 500; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px; }
+  .whatsapp-btn-big:hover { background: #20ba5a; }
+  .whatsapp-icon { width: 22px; height: 22px; }
+  .divider { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .divider-line { flex: 1; height: 0.5px; background: #333; }
+  .divider-text { font-size: 12px; color: #555; }
+  .submit-btn { width: 100%; background: #ff5500; color: #fff; border: none; padding: 14px; border-radius: 10px; font-size: 16px; font-weight: 500; cursor: pointer; transition: background 0.2s; }
+  .submit-btn:hover { background: #e04a00; }
+  .success-msg { display: none; text-align: center; padding: 2rem; }
+  .footer { background: #080808; color: #666; padding: 1.5rem 2.5rem; text-align: center; font-size: 13px; }
+  .wa-float { position: fixed; bottom: 24px; right: 24px; background: #25d366; border-radius: 50%; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 16px rgba(37,211,102,0.4); z-index: 999; border: none; }
+  @media (max-width: 600px) {
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero-img { min-height: 240px; }
+    .features-grid { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+    .hero-text { padding: 2rem 1.5rem; }
+    .specs, .features, .gallery, .order-section { padding-left: 1.5rem; padding-right: 1.5rem; }
+  }
+</style>
+
+<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Haomeng MTB Special mountain bike landing page with WhatsApp order button</h2>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <span class="badge">New 2026</span>
+      <h1 class="hero-title">HAOMENG<br><span>MTB Special</span></h1>
+      <p class="hero-sub">VTT performant avec freins à disque double, fourche suspendue et 21 vitesses — prêt pour tous les terrains.</p>
+      <div class="price-row">
+        <span class="price" id="display-price">1 850 DH</span>
+        <span class="price-note">Livraison incluse au Maroc</span>
+      </div>
+      <div class="color-section">
+        <div class="color-label">Couleur disponible</div>
+        <div class="color-dots">
+          <div class="dot dot-orange active" onclick="selectColor(this,'Noir / Orange',1850)" title="Noir / Orange"></div>
+          <div class="dot dot-green" onclick="selectColor(this,'Noir / Vert',1850)" title="Noir / Vert"></div>
+          <div class="dot dot-white" onclick="selectColor(this,'Blanc / Orange',1900)" title="Blanc / Orange"></div>
+          <div class="dot dot-blue" onclick="selectColor(this,'Noir / Bleu',1850)" title="Noir / Bleu"></div>
+        </div>
+      </div>
+      <div class="cta-row">
+        <button class="btn-primary" onclick="document.getElementById('order').scrollIntoView({behavior:'smooth'})">Commander maintenant</button>
+        <button class="btn-secondary" onclick="document.getElementById('specs').scrollIntoView({behavior:'smooth'})">Voir les specs</button>
+      </div>
+    </div>
+    <div class="hero-img">
+      <img id="main-img" src="/mnt/user-data/uploads/WhatsApp_Image_2026-04-09_at_20_49_48__1_.jpeg" alt="Haomeng MTB Special" />
+      <div class="img-nav" id="img-nav"></div>
+    </div>
+  </div>
+</div>
+
+<div class="specs" id="specs">
+  <div class="section-title">Caractéristiques techniques</div>
+  <div class="specs-grid">
+    <div class="spec-card"><div class="spec-val">26"</div><div class="spec-name">Taille des roues</div></div>
+    <div class="spec-card"><div class="spec-val">21 vitesses</div><div class="spec-name">Dérailleur</div></div>
+    <div class="spec-card"><div class="spec-val">Disque double</div><div class="spec-name">Freinage</div></div>
+    <div class="spec-card"><div class="spec-val">Suspension</div><div class="spec-name">Fourche avant</div></div>
+    <div class="spec-card"><div class="spec-val">Aluminium</div><div class="spec-name">Cadre</div></div>
+    <div class="spec-card"><div class="spec-val">Tout terrain</div><div class="spec-name">Type de pneus</div></div>
+  </div>
+</div>
+
+<div class="features">
+  <div class="section-title">Points forts</div>
+  <div class="features-grid">
+    <div class="feat"><div class="feat-icon"><div class="feat-dot"></div></div><div><div class="feat-title">Freins à disque double</div><div class="feat-desc">Freinage puissant et précis sur toutes surfaces</div></div></div>
+    <div class="feat"><div class="feat-icon"><div class="feat-dot"></div></div><div><div class="feat-title">Fourche suspendue</div><div class="feat-desc">Absorption des chocs pour un confort optimal</div></div></div>
+    <div class="feat"><div class="feat-icon"><div class="feat-dot"></div></div><div><div class="feat-title">21 vitesses</div><div class="feat-desc">Passage fluide adapté à chaque terrain</div></div></div>
+    <div class="feat"><div class="feat-icon"><div class="feat-dot"></div></div><div><div class="feat-title">Cadre aluminium léger</div><div class="feat-desc">Robuste et léger pour longue distance</div></div></div>
+    <div class="feat"><div class="feat-icon"><div class="feat-dot"></div></div><div><div class="feat-title">Garde-boue inclus</div><div class="feat-desc">Protection avant et arrière livrée avec le vélo</div></div></div>
+    <div class="feat"><div class="feat-icon"><div class="feat-dot"></div></div><div><div class="feat-title">Livraison partout au Maroc</div><div class="feat-desc">Expédition rapide, paiement à la livraison disponible</div></div></div>
+  </div>
+</div>
+
+<div class="gallery">
+  <div class="section-title">Galerie photos</div>
+  <div class="gallery-grid" id="gallery-grid"></div>
+</div>
+
+<div class="order-section" id="order">
+  <div class="order-card">
+    <div id="order-form-wrap">
+      <div class="order-title">Passer une commande</div>
+      <div class="order-sub">Commandez directement via WhatsApp ou remplissez le formulaire ci-dessous</div>
+
+      <button class="whatsapp-btn-big" onclick="quickWhatsapp()">
+        <svg class="whatsapp-icon" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Commander via WhatsApp — 0675958697
+      </button>
+
+      <div class="divider">
+        <div class="divider-line"></div>
+        <div class="divider-text">ou remplir le formulaire</div>
+        <div class="divider-line"></div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group"><label>Prénom et Nom</label><input type="text" id="name" placeholder="Mohamed Amrani" /></div>
+        <div class="form-group"><label>Téléphone</label><input type="tel" id="phone" placeholder="06 00 00 00 00" /></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Ville</label><input type="text" id="city" placeholder="Casablanca" /></div>
+        <div class="form-group"><label>Couleur</label>
+          <select id="color-select">
+            <option value="Noir / Orange">Noir / Orange</option>
+            <option value="Noir / Vert">Noir / Vert</option>
+            <option value="Blanc / Orange">Blanc / Orange</option>
+            <option value="Noir / Bleu">Noir / Bleu</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:12px"><label>Adresse de livraison</label><textarea id="address" placeholder="Numéro, rue, quartier..."></textarea></div>
+      <div class="qty-row">
+        <span class="qty-label">Quantité :</span>
+        <div class="qty-ctrl">
+          <button class="qty-btn" onclick="changeQty(-1)">−</button>
+          <span class="qty-num" id="qty">1</span>
+          <button class="qty-btn" onclick="changeQty(1)">+</button>
+        </div>
+      </div>
+      <div class="total-row">
+        <span class="total-label">Total estimé</span>
+        <span class="total-price" id="total">1 850 DH</span>
+      </div>
+      <button class="submit-btn" onclick="submitOrder()">Envoyer la commande via WhatsApp</button>
+    </div>
+    <div class="success-msg" id="success-msg">
+      <div style="width:60px;height:60px;background:#ff550020;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-size:28px;color:#ff5500">✓</div>
+      <div style="font-size:18px;font-weight:500;margin-bottom:8px;color:#fff">Commande envoyée !</div>
+      <div style="font-size:13px;color:#888">Redirection vers WhatsApp... Notre équipe vous répondra très rapidement.</div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <strong style="color:#fff">Yoobajouet</strong> — Vélos &amp; Jouets au Maroc<br>
+  <span style="color:#ff5500">Livraison partout au Maroc · Paiement à la livraison disponible</span>
+</div>
+
+<button class="wa-float" onclick="quickWhatsapp()" title="Commander via WhatsApp">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</button>
+
+<script>
+const WA_NUMBER = '212675958697';
+const allImgs = [
+  '/mnt/user-data/uploads/WhatsApp_Image_2026-04-09_at_20_49_48__1_.jpeg',
+  '/mnt/user-data/uploads/WhatsApp_Image_2026-04-09_at_20_49_48__3_.jpeg',
+  '/mnt/user-data/uploads/WhatsApp_Image_2026-04-09_at_20_49_48__5_.jpeg',
+  '/mnt/user-data/uploads/WhatsApp_Image_2026-04-09_at_20_49_48__6_.jpeg',
+  '/mnt/user-data/uploads/WhatsApp_Image_2026-04-09_at_20_49_48.jpeg',
+  '/mnt/user-data/uploads/WhatsApp_Image_2026-04-09_at_20_49_49__1_.jpeg',
+  '/mnt/user-data/uploads/WhatsApp_Image_2026-04-09_at_20_49_49__2_.jpeg'
+];
+
+let qty = 1;
+let unitPrice = 1850;
+let currentImgIdx = 0;
+
+const navEl = document.getElementById('img-nav');
+const mainImg = document.getElementById('main-img');
+const galleryGrid = document.getElementById('gallery-grid');
+
+allImgs.forEach((src, i) => {
+  const dot = document.createElement('div');
+  dot.className = 'img-dot' + (i === 0 ? ' active' : '');
+  dot.onclick = () => switchImg(i);
+  navEl.appendChild(dot);
+
+  const item = document.createElement('div');
+  item.className = 'gallery-item' + (i === 0 ? ' selected' : '');
+  item.onclick = () => { switchImg(i); document.querySelector('.hero-img').scrollIntoView({behavior:'smooth'}); };
+  const img = document.createElement('img');
+  img.src = src;
+  img.alt = 'Haomeng MTB photo ' + (i+1);
+  item.appendChild(img);
+  galleryGrid.appendChild(item);
+});
+
+function switchImg(i) {
+  currentImgIdx = i;
+  mainImg.src = allImgs[i];
+  document.querySelectorAll('.img-dot').forEach((d,idx) => d.classList.toggle('active', idx === i));
+  document.querySelectorAll('.gallery-item').forEach((g,idx) => g.classList.toggle('selected', idx === i));
+}
+
+function selectColor(dot, colorName, price) {
+  document.querySelectorAll('.dot').forEach(d => d.classList.remove('active'));
+  dot.classList.add('active');
+  unitPrice = price;
+  document.getElementById('display-price').textContent = price.toLocaleString('fr-MA') + ' DH';
+  document.getElementById('color-select').value = colorName;
+  updateTotal();
+}
+
+function changeQty(delta) {
+  qty = Math.max(1, qty + delta);
+  document.getElementById('qty').textContent = qty;
+  updateTotal();
+}
+
+function updateTotal() {
+  document.getElementById('total').textContent = (qty * unitPrice).toLocaleString('fr-MA') + ' DH';
+}
+
+function buildMsg(name, phone, city, color, address) {
+  return encodeURIComponent(
+    'Bonjour Yoobajouet ! 👋\n\n' +
+    'Je souhaite commander :\n' +
+    '🚵 Vélo : Haomeng MTB Special\n' +
+    '🎨 Couleur : ' + color + '\n' +
+    '🔢 Quantité : ' + qty + '\n' +
+    '💰 Total : ' + (qty * unitPrice).toLocaleString('fr-MA') + ' DH\n\n' +
+    '👤 Nom : ' + (name || 'Non renseigné') + '\n' +
+    '📞 Téléphone : ' + (phone || 'Non renseigné') + '\n' +
+    '🏙️ Ville : ' + (city || 'Non renseignée') + '\n' +
+    (address ? '📍 Adresse : ' + address + '\n' : '') +
+    '\nMerci !'
+  );
+}
+
+function quickWhatsapp() {
+  const color = document.getElementById('color-select') ? document.getElementById('color-select').value : 'Noir / Orange';
+  const msg = buildMsg('', '', '', color, '');
+  window.open('https://wa.me/' + WA_NUMBER + '?text=' + msg, '_blank');
+}
+
+function submitOrder() {
+  const name = document.getElementById('name').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const city = document.getElementById('city').value.trim();
+  const color = document.getElementById('color-select').value;
+  const address = document.getElementById('address').value.trim();
+  if (!name || !phone || !city) {
+    alert('Veuillez remplir votre nom, téléphone et ville.');
+    return;
+  }
+  document.getElementById('order-form-wrap').style.display = 'none';
+  document.getElementById('success-msg').style.display = 'block';
+  const msg = buildMsg(name, phone, city, color, address);
+  setTimeout(() => { window.open('https://wa.me/' + WA_NUMBER + '?text=' + msg, '_blank'); }, 800);
+}
+</script>
